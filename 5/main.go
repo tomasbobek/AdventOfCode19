@@ -12,21 +12,21 @@ import (
 
 var (
 	InstructionLenght = map[int]int{
-		1:4, 2:4, 3:2, 4:2, 5:3, 6:3, 7:4, 8:4, 99:1,
+		1: 4, 2: 4, 3: 2, 4: 2, 5: 3, 6: 3, 7: 4, 8: 4, 99: 1,
 	}
 )
 
 func main() {
-	program := Program{Position:0,Completed:false}
+	program := Program{Position: 0, Completed: false}
 
 	program.loadCodeFromFile("C:/Users/tomas.bobek/AdventOfCode19/5/code")
 	program.execute()
 }
 
 type Instruction struct {
-	OpCode    int
-	Length    int
-	Params    []InstructionParam
+	OpCode int
+	Length int
+	Params []InstructionParam
 }
 
 func (i *Instruction) initialize(intCode []int, pIndex int) {
@@ -45,7 +45,7 @@ func (i *Instruction) initialize(intCode []int, pIndex int) {
 	i.Params = make([]InstructionParam, paramCount, paramCount)
 
 	for j := 0; j < paramCount; j++ {
-		i.Params[j] = InstructionParam{0,intCode[pIndex+j+1]}
+		i.Params[j] = InstructionParam{0, intCode[pIndex+j+1]}
 
 		if evalParamModes {
 			i.Params[j].Mode = (instValue / int(math.Pow(float64(10), float64(j+2)))) % 10

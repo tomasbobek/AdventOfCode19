@@ -8,13 +8,14 @@ import (
 )
 
 func main() {
-	main: for n := 0; n < 100; n++ {
+main:
+	for n := 0; n < 100; n++ {
 		for v := 0; v < 100; v++ {
 			sequence := loadSequence()
 			returnCode := executeProgram(sequence, n, v)
 
 			if returnCode == 19690720 {
-				fmt.Println(fmt.Sprintf("Noun: %d, Verb: %d, Code: %d", n, v, 100 * n + v))
+				fmt.Println(fmt.Sprintf("Noun: %d, Verb: %d, Code: %d", n, v, 100*n+v))
 				break main
 			}
 		}
@@ -65,12 +66,10 @@ func executeProgram(sequence []int, noun, verb int) int {
 }
 
 func add(a []int, pos int) {
-	//fmt.Println(fmt.Sprintf("Adding %d to %d, saving to %d", a[a[pos+1]], a[a[pos+2]], a[pos+3]))
 	a[a[pos+3]] = a[a[pos+1]] + a[a[pos+2]]
 }
 
 func multiply(a []int, pos int) {
-	//fmt.Println(fmt.Sprintf("Multiplying %d with %d, saving to %d", a[a[pos+1]], a[a[pos+2]], a[pos+3]))
 	a[a[pos+3]] = a[a[pos+1]] * a[a[pos+2]]
 }
 

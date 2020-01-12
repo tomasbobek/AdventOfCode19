@@ -7,9 +7,9 @@ import (
 
 const (
 	RangeMin = 171309
-	//RangeMax = 243603
 	RangeMax = 643603
 )
+
 func main() {
 	totalMatches := 0
 

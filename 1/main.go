@@ -41,6 +41,6 @@ func main() {
 }
 
 func calculateFuelReq(mass int) int {
-	fuelReq := math.Floor(float64(mass / 3)) - 2
+	fuelReq := math.Floor(float64(mass/3)) - 2
 	return int(fuelReq)
 }

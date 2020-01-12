@@ -25,7 +25,7 @@ func main() {
 
 	crossDistances := make([]int, 0, 0)
 	for _, intersection := range intersections {
-		crossDistances = append(crossDistances, getPathLengthToPoint(wirePathA, intersection) + getPathLengthToPoint(wirePathB, intersection))
+		crossDistances = append(crossDistances, getPathLengthToPoint(wirePathA, intersection)+getPathLengthToPoint(wirePathB, intersection))
 	}
 	sort.Ints(crossDistances)
 	fmt.Println("Nearest intersection for wire length: ", crossDistances[0])
@@ -44,7 +44,7 @@ func loadSteps() ([]string, []string) {
 }
 
 func constructWirePath(steps []string) []Point {
-	currentPos := Point{0,0}
+	currentPos := Point{0, 0}
 	path := make([]Point, 0, 0)
 
 	for _, step := range steps {
@@ -62,7 +62,7 @@ func constructWirePath(steps []string) []Point {
 			case "U":
 				stepPoint = Point{currentPos.X, currentPos.Y + 1}
 			case "D":
-				stepPoint =  Point{currentPos.X, currentPos.Y - 1}
+				stepPoint = Point{currentPos.X, currentPos.Y - 1}
 			case "L":
 				stepPoint = Point{currentPos.X - 1, currentPos.Y}
 			case "R":
@@ -110,7 +110,7 @@ func nearestDistance(points []Point) int {
 	distance := math.MaxInt32
 
 	for _, point := range points {
-		currentDist := int(math.Abs(float64(point.X))+math.Abs(float64(point.Y)))
+		currentDist := int(math.Abs(float64(point.X)) + math.Abs(float64(point.Y)))
 		if currentDist < distance {
 			distance = currentDist
 		}
