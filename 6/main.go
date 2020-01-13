@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "io/ioutil"
+    "math"
     "strings"
 )
 
@@ -17,6 +18,7 @@ func main() {
     orbitMap.calculateOrbitDepthsFromCenter()
 
     fmt.Println("Number of direct and indirect orbits: ", orbitMap.getTotalNumberOfOrbits())
+    fmt.Println("Orbital distance between YOU and Santa is: ", orbitMap.calculateOrbitalDistance("YOU", "SAN"))
 }
 
 type OrbitMap struct {
@@ -26,9 +28,10 @@ type OrbitMap struct {
 }
 
 type SpatialObject struct {
-    Name       string
-    OrbitDepth int
-    Satellites []*SpatialObject
+    Name          string
+    OrbitDepth    int
+    OrbitedObject *SpatialObject
+    Satellites    []*SpatialObject
 }
 
 func loadOrbitMapData(file string) []string {
@@ -71,15 +74,17 @@ func (o *OrbitMap) constructOrbitMap(data []string) {
         if val, ok := orbitMap[pair[1]]; ok {
             so = val
         } else {
-            so = &SpatialObject{pair[1], 0, []*SpatialObject{}}
+            so = &SpatialObject{pair[1], 0, nil, []*SpatialObject{}}
             orbitMap[pair[1]] = so
         }
 
         if val, ok := orbitMap[pair[0]]; ok {
             val.Satellites = append(val.Satellites, so)
         } else {
-            orbitMap[pair[0]] = &SpatialObject{pair[0], 0, []*SpatialObject{so}}
+            orbitMap[pair[0]] = &SpatialObject{pair[0], 0, nil, []*SpatialObject{so}}
         }
+
+        so.OrbitedObject = orbitMap[pair[0]]
     }
 
     o.Map = orbitMap
@@ -96,6 +101,39 @@ func (o *OrbitMap) getTotalNumberOfOrbits() int {
     }
 
     return totalOrbits
+}
+
+func (o *OrbitMap) calculateOrbitalDistance(start, end string) int {
+    pathFromStart := o.getPathToCenterFromObject(start)
+    pathFromEnd := o.getPathToCenterFromObject(end)
+
+    shortestDistance := math.MaxInt32
+
+    for i1, p1 := range pathFromStart {
+        for i2, p2 := range pathFromEnd {
+            distance := i1 + i2
+            if p1 == p2 && distance < shortestDistance {
+                shortestDistance = distance
+            }
+        }
+    }
+
+    return shortestDistance - 2
+}
+
+func (o *OrbitMap) getPathToCenterFromObject(objectName string) []string {
+    var result []string
+
+    if object, ok := o.Map[objectName]; ok {
+        for object.Name != o.CenterOfMass {
+            result = append(result, object.Name)
+            object = object.OrbitedObject
+        }
+    } else {
+        fmt.Println("Cannot find desired spatial object - ", objectName)
+    }
+
+    return result
 }
 
 func fillOrbitDepth(node *SpatialObject, depth int) {
