@@ -8,3 +8,5 @@ Solution:
 - [Day 3](3/main.go)
 - [Day 4](4/main.go)
 - [Day 5](5/main.go)
+- [Day 6](6/main.go)
+- [Day 7](7/main.go)
