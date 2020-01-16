@@ -33,7 +33,7 @@ var (
 
 func main() {
     // -----------------------------------------------------------------------------------------------------------------
-    // Here we solve problem for Part One
+    // Here we solve problem for both parts (Second Part only takes different initial input)
     program := Program{}
     program.loadCodeFromFile("C:/Users/tomas.bobek/AdventOfCode19/9/code")
     program.execute()
