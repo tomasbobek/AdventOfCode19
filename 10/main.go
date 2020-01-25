@@ -10,13 +10,13 @@ import (
 )
 
 func main() {
-    // -----------------------------------------------------------------------------------------------------------------
-    // Here we solve problem for Part One
     path, err := os.Getwd()
     if err != nil {
         fmt.Println(err)
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // Here we solve problem for Part One
     asteroidMap := &AsteroidMap{}
     asteroidMap.loadMapDataFromFile(path + "/10/map")
 

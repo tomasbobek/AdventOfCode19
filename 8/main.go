@@ -12,10 +12,15 @@ import (
 )
 
 func main() {
+    path, err := os.Getwd()
+    if err != nil {
+        fmt.Println(err)
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // Here we solve problem for Part One
     processor := ImageProcessor{ImageWidth: 25, ImageHeight: 6}
-    processor.loadDataFromFile("C:/Users/tomas.bobek/AdventOfCode19/8/imageData")
+    processor.loadDataFromFile(path + "/8/imageData")
     processor.constructLayers()
 
     minZeroCount := math.MaxInt32
@@ -37,7 +42,7 @@ func main() {
     // -----------------------------------------------------------------------------------------------------------------
     // Here we solve problem for Part Two
     processor.processImage()
-    processor.renderImage("C:/Users/tomas.bobek/AdventOfCode19/8/elvenImage.png")
+    processor.renderImage(path + "/8/elvenImage.png")
 }
 
 type ImageProcessor struct {

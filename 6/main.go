@@ -4,15 +4,21 @@ import (
     "fmt"
     "io/ioutil"
     "math"
+    "os"
     "strings"
 )
 
 const CenterOfMass = "COM"
 
 func main() {
+    path, err := os.Getwd()
+    if err != nil {
+        fmt.Println(err)
+    }
+
     orbitMap := OrbitMap{CenterOfMass: CenterOfMass}
 
-    orbitMapData := loadOrbitMapData("C:/Users/tomas.bobek/AdventOfCode19/6/orbitMap")
+    orbitMapData := loadOrbitMapData(path + "/6/orbitMap")
     orbitMap.loadSpatialObjectList(orbitMapData)
     orbitMap.constructOrbitMap(orbitMapData)
     orbitMap.calculateOrbitDepthsFromCenter()

@@ -17,10 +17,15 @@ var (
 )
 
 func main() {
+    path, err := os.Getwd()
+    if err != nil {
+        fmt.Println(err)
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // Here we solve problem for Part One
     program := Program{Position: 0, Completed: false}
-    program.loadCodeFromFile("C:/Users/tomas.bobek/AdventOfCode19/7/code")
+    program.loadCodeFromFile(path + "/7/code")
 
     bestSignal := 0
     for _, thrusterConfig := range getArrayPermutations([]int{0,1,2,3,4}) {

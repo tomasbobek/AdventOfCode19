@@ -32,10 +32,15 @@ var (
 )
 
 func main() {
+    path, err := os.Getwd()
+    if err != nil {
+        fmt.Println(err)
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // Here we solve problem for both parts (Second Part only takes different initial input)
     program := Program{}
-    program.loadCodeFromFile("C:/Users/tomas.bobek/AdventOfCode19/9/code")
+    program.loadCodeFromFile(path + "/9/code")
     program.execute()
 
     fmt.Println("Program generated following BOOST code: ", program.DataStack[len(program.DataStack) - 1])

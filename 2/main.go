@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -23,7 +24,12 @@ main:
 }
 
 func loadSequence() []int {
-	bytes, err := ioutil.ReadFile("C:/Users/tomas.bobek/AdventOfCode19/2/code")
+	path, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	bytes, err := ioutil.ReadFile(path + "/2/code")
 
 	if err != nil {
 		fmt.Println(err)

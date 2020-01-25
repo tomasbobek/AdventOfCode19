@@ -4,12 +4,18 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math"
+	"os"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	bytes, err := ioutil.ReadFile("C:/Users/tomas.bobek/AdventOfCode19/1/input")
+	path, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	bytes, err := ioutil.ReadFile(path + "/1/input")
 
 	if err != nil {
 		fmt.Println(err)

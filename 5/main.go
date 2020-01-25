@@ -17,9 +17,14 @@ var (
 )
 
 func main() {
+	path, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	program := Program{Position: 0, Completed: false}
 
-	program.loadCodeFromFile("C:/Users/tomas.bobek/AdventOfCode19/5/code")
+	program.loadCodeFromFile(path + "/5/code")
 	program.execute()
 }
 

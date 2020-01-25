@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -32,7 +33,12 @@ func main() {
 }
 
 func loadSteps() ([]string, []string) {
-	bytes, err := ioutil.ReadFile("C:/Users/tomas.bobek/AdventOfCode19/3/input")
+	path, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	bytes, err := ioutil.ReadFile(path + "/3/input")
 
 	if err != nil {
 		fmt.Println(err)
