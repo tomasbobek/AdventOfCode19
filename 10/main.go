@@ -26,7 +26,7 @@ func main() {
     fmt.Println(fmt.Sprintf("The most suitable asteroid has clear visibility on %d other asteroids", visibilityCount))
 
     // -----------------------------------------------------------------------------------------------------------------
-    // Here we solve problem for Part One
+    // Here we solve problem for Part Two
     laserGun := &LaserGun{AsteroidMap: asteroidMap, BaseStation: asteroid, HitAsteroidsMap: make(map[*Point]bool)}
     laserGun.calculateAsteroidAngles()
     laserGun.divideAsteroidsToQuadrants()
