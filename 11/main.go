@@ -3,6 +3,9 @@ package main
 import (
     "bufio"
     "fmt"
+    "image"
+    "image/color"
+    "image/png"
     "io/ioutil"
     "math"
     "os"
@@ -54,6 +57,10 @@ func main() {
     robot.run()
 
     fmt.Println("robot painted ", len(robot.paintedPoints), " tiles on the ship hull")
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Here we solve problem for Part Two
+    robot.exportToImage(path + "/11/registration.png")
 }
 
 func newPaintingRobotWithProgram(programPath string) *paintingRobot {
@@ -71,7 +78,7 @@ func newPaintingRobotWithProgram(programPath string) *paintingRobot {
     return &paintingRobot{
         brain: program,
         direction: up,
-        position:  point{
+        position:  &point{
             x:     0,
             y:     0,
         },
@@ -80,9 +87,9 @@ func newPaintingRobotWithProgram(programPath string) *paintingRobot {
 
 type paintingRobot struct {
     brain         *program
-    position      point
+    position      *point
     direction     direction
-    paintedPoints []point
+    paintedPoints []*point
 }
 
 func (r *paintingRobot) run() {
@@ -90,7 +97,7 @@ func (r *paintingRobot) run() {
     wg.Add(1)
     go r.brain.execute()
     go func() {
-        r.brain.inChannel <- 0
+        r.brain.inChannel <- 1
         readingColor := true
 
         robotLoop: for {
@@ -175,7 +182,7 @@ func (r *paintingRobot) move() {
         posX -= 1
     }
 
-    r.position = point{
+    r.position = &point{
         x:     posX,
         y:     posY,
     }
@@ -192,6 +199,69 @@ func (r *paintingRobot) scanColor() int {
     }
 
     return 0
+}
+
+// Calculates overall size of the grid (painted) and center of both axis.
+func (r paintingRobot) getGridInfo() (int, int, point) {
+    xMin, xMax, yMin, yMax := 0, 0, 0, 0
+    for _, p := range r.paintedPoints {
+        if p.x > xMax {
+            xMax = p.x
+        }
+        if p.x < xMin {
+            xMin = p.x
+        }
+        if p.y > yMax {
+            yMax = p.y
+        }
+        if p.y < yMin {
+            yMin = p.y
+        }
+    }
+
+    return int(math.Abs(float64(xMin))) + xMax + 1, int(math.Abs(float64(yMin))) + yMax + 1,
+        point{
+            x: int(math.Abs(float64(xMin))),
+            y: int(math.Abs(float64(yMin))),
+        }
+}
+
+func (r paintingRobot) getTileColor(x, y int) color.RGBA {
+    for _, p := range r.paintedPoints {
+        if x == p.x && y == p.y {
+            switch p.color {
+            case 0:
+                return color.RGBA{R: 0, G: 0, B: 0, A: 0xff}
+            case 1:
+                return color.RGBA{R: 255, G: 255, B: 255, A: 0xff}
+            }
+        }
+    }
+    return color.RGBA{R: 0, G: 0, B: 0, A: 0xff}
+}
+
+func (r paintingRobot) exportToImage(output string) {
+    canvasWidth, canvasHeight, center := r.getGridInfo()
+    startPoint := image.Point{X: 0, Y: 0}
+    endPoint := image.Point{X: canvasWidth, Y: canvasHeight}
+
+    img := image.NewRGBA(image.Rectangle{Min: startPoint, Max: endPoint})
+
+    for x := 0; x < canvasWidth; x++ {
+        for y := 0; y < canvasHeight; y++ {
+            img.Set(x, y, r.getTileColor(x - center.x, y - center.y))
+        }
+    }
+
+    f, err := os.Create(output)
+    if err != nil {
+        fmt.Println(err)
+    }
+
+    err = png.Encode(f, img)
+    if err != nil {
+        fmt.Println(err)
+    }
 }
 
 type point struct {
